@@ -15,7 +15,6 @@
 //To move the left motor, move the left stick, while to move the right motor, move the right stick
 
 
-//NOTE: CURRENTLY, THIS CODE ONLY WORKS FOR THE DRIVE TRAIN, NOT THE LIFT OR ANY OTHER MOTORS/SENSORS
 
 
 
@@ -36,6 +35,12 @@ vex::competition    Competition;
 //Make sure to CHANGE THE PORT NUMBER TO THE PORT THAT THE CORRESPONDING MOTOR IS PLUGGED INTO
 vex::motor  LeftDriveMotor = vex::motor( vex:: PORT1, true);
 vex::motor  RightDriveMotor = vex::motor( vex:: PORT10);
+vex::motor  LeftLiftMotor = vex::motor( vex:: PORT6, true); //Change port
+vex::motor  LeftBottomLiftMotor = vex::motor( vex:: PORT7, true); //Change port
+vex::motor  RightLiftMotor = vex::motor( vex:: PORT5); //Change port
+vex::motor  LeftIntakeMotor = vex::motor( vex:: PORT3); //Change port
+vex::motor  RightIntakeMotor = vex::motor( vex:: PORT4, true); //Change port
+
 
 //Setting up the controller
 
@@ -57,9 +62,23 @@ void auton (void) {
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
+  
+  //variables
+
+  //Percent speed that the lift moves at
+  int LiftSpeed = 75;
+
+  //Percent speed that the intake moves at
+  int intakeSpeed = 100;
+  
+  
   // infinite loop for the controller binds
   while (1) {
 
+    
+    //Drive Train Program
+    //Tank controls
+    
     //The code tying the right drive train motor to the controller
     RightDriveMotor.spin(vex::directionType::fwd, 
     //Defines what part of the controller the action is bound to
@@ -72,6 +91,45 @@ int main() {
 
 
 
+    //Lift Program
+
+
+    //If Button 1 is pressed, the lift will move up
+    if (Yeetroller.ButtonR2.pressing()) {
+        LeftLiftMotor.spin(vex::directionType::fwd, LiftSpeed, vex::velocityUnits::pct);
+        LeftBottomLiftMotor.spin(vex::directionType::fwd, LiftSpeed, vex::velocityUnits::pct);
+        RightLiftMotor.spin(vex::directionType::fwd, LiftSpeed, vex::velocityUnits::pct);
+    }
+    //If Button 2 is pressed, the lift will move down
+    else if (Yeetroller.ButtonR1.pressing()){
+      LeftLiftMotor.spin(vex::directionType::rev, LiftSpeed, vex::velocityUnits::pct);
+      LeftBottomLiftMotor.spin(vex::directionType::rev, LiftSpeed, vex::velocityUnits::pct);
+      RightLiftMotor.spin(vex::directionType::rev, LiftSpeed, vex::velocityUnits::pct);
+    }
+    //If nothing is pressed, the lift will stay stationary
+    else {
+      LeftLiftMotor.stop(vex::brakeType::brake);
+      LeftBottomLiftMotor.stop(vex::brakeType::brake);
+      RightLiftMotor.stop(vex::brakeType::brake);
+    }
+
+
+    //Intake Program:
+
+    //If Button 3 is pressed, the lift will move up
+    if (Yeetroller.ButtonL2.pressing()) {
+        LeftIntakeMotor.spin(vex::directionType::fwd, intakeSpeed, vex::velocityUnits::pct);
+        RightIntakeMotor.spin(vex::directionType::fwd, intakeSpeed, vex::velocityUnits::pct);
+    }
+    //If nothing is pressed, the intake will stay stationary
+    else {
+      LeftIntakeMotor.stop(vex::brakeType::brake);
+      RightIntakeMotor.stop(vex::brakeType::brake);
+    }
+ 
+
+
+
 
 
 
@@ -80,3 +138,8 @@ int main() {
   }
   
 }
+
+
+
+
+
