@@ -1,3 +1,15 @@
-# VEXCode-Code
-The only changes are in the main.cpp part, so don't bother with the others. Also make sure that the ports in the code match to their corresponding motors.
+# Code for our VEX Robot
+As always, copy code into main.cpp.
+
+Controls:
+Left Stick - Left Drivetrain
+Right Stick - Right Drivetrain
+Button R2 - Move lift up
+Button R1 - Move lift down
+Button L2 - Move Bottom Intakes Inward (suck ball in)
+Button L1 - Move Bottom Intakes Outward (spit ball out)
+Button X - Move Top Intake Inward (suck ball in)
+Button A - Move Top Intake Outward (spit ball out)
+
+
 
