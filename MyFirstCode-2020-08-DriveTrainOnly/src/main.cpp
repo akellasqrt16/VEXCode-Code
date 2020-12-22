@@ -54,7 +54,7 @@ vex::motor  RightIntakeMotor = vex::motor( vex:: PORT4, true); //Change port
 
 //Setting up the controller
 
-vex::controller Controller = vex::controller();
+vex::controller Yeetroller = vex::controller();
 
 //Stuff like calibrating sensors, positioning lift, etc.
 void setup (void) {
@@ -80,45 +80,67 @@ int main() {
 
   //Percent speed that the intake moves at
   int intakeSpeed = 100;
+
+  int driveSpeed = 100;
   
   
   // infinite loop for the controller binds
   while (1) {
 
     
-    //Drive Train Program
-    //Tank controls
-    
-    //The code tying the left top drive train motor to the controller
-    leftTopDriveMotor.spin(vex::directionType::fwd, 
-    //Defines what part of the controller the action is bound to
-    Controller.Axis2.position(), 
-    //Sets the units that you might put in the position() function in percent at least I think
-    vex::velocityUnits::pct );
-
-    //Literally the same thing, but for the other motors
-    rightTopDriveMotor.spin(vex::directionType::fwd, Controller.Axis3.position(), vex::velocityUnits::pct );
-    leftBottomDriveMotor.spin(vex::directionType::fwd, Controller.Axis2.position(), vex::velocityUnits::pct );
-    rightBottomDriveMotor.spin(vex::directionType::fwd, Controller.Axis3.position(), vex::velocityUnits::pct );
-
-    if(Controller.Axis2.position() > 0 && Controller.Axis1.position() > 0) {
-      leftTopDriveMotor.spin(vex::directionType::fwd, LiftSpeed, vex::velocityUnits::pct);
-      rightBottomDriveMotor.spin(vex::directionType::fwd, LiftSpeed, vex::velocityUnits::pct);
-
+//Drive Train Program
+  //Left Stick  
+    //When the left stick is in the 1st quadrant, the robot moves diagonally right.
+    if(Yeetroller.Axis3.position() > 0 && Yeetroller.Axis4.position() > 0) {
+      leftTopDriveMotor.spin(vex::directionType::fwd, driveSpeed, vex::velocityUnits::pct);
+      rightBottomDriveMotor.spin(vex::directionType::fwd, driveSpeed, vex::velocityUnits::pct);
+    } 
+    //When the left stick is in the 2st quadrant, the robot moves diagonally left.
+    if(Yeetroller.Axis3.position() > 0 && Yeetroller.Axis4.position() < 0) {
+      leftBottomDriveMotor.spin(vex::directionType::fwd, driveSpeed, vex::velocityUnits::pct);
+      rightTopDriveMotor.spin(vex::directionType::fwd, driveSpeed, vex::velocityUnits::pct);
     }
+    //When the left stick is in the 3rd quadrant, the robot moves backwards diagonally left.
+    if(Yeetroller.Axis3.position() < 0 && Yeetroller.Axis4.position() < 0) {
+      leftTopDriveMotor.spin(vex::directionType::rev, driveSpeed, vex::velocityUnits::pct);
+      rightBottomDriveMotor.spin(vex::directionType::rev, driveSpeed, vex::velocityUnits::pct);
+    }
+    //When the left stick is in the 4th quadrant, the robot moves backwards diagonally right.
+    if(Yeetroller.Axis3.position() < 0 && Yeetroller.Axis4.position() > 0) {
+      leftBottomDriveMotor.spin(vex::directionType::rev, driveSpeed, vex::velocityUnits::pct);
+      rightTopDriveMotor.spin(vex::directionType::rev, driveSpeed, vex::velocityUnits::pct);
+    }
+  //Right Stick
+    //If the right stick is to the right, the robot will turn right.
+    if(Yeetroller.Axis1.position() > 0) {
+      leftTopDriveMotor.spin(vex::directionType::fwd, driveSpeed, vex::velocityUnits::pct);
+      rightBottomDriveMotor.spin(vex::directionType::rev, driveSpeed, vex::velocityUnits::pct);
+    } 
+    //If the right stick is to the left, the robot will turn left.
+    if(Yeetroller.Axis1.position() < 0) {
+      leftBottomDriveMotor.spin(vex::directionType::rev, driveSpeed, vex::velocityUnits::pct);
+      rightTopDriveMotor.spin(vex::directionType::fwd, driveSpeed, vex::velocityUnits::pct);
+    } 
+
+
+
+
+
+
+
 
 
     //Lift Program
 
 
     //If Button 1 is pressed, the lift will move up
-    if (Controller.ButtonR2.pressing()) {
+    if (Yeetroller.ButtonR2.pressing()) {
         LeftLiftMotor.spin(vex::directionType::fwd, LiftSpeed, vex::velocityUnits::pct);
         LeftBottomLiftMotor.spin(vex::directionType::fwd, LiftSpeed, vex::velocityUnits::pct);
         RightLiftMotor.spin(vex::directionType::fwd, LiftSpeed, vex::velocityUnits::pct);
     }
     //If Button 2 is pressed, the lift will move down
-    else if (Controller.ButtonR1.pressing()){
+    else if (Yeetroller.ButtonR1.pressing()){
       LeftLiftMotor.spin(vex::directionType::rev, LiftSpeed, vex::velocityUnits::pct);
       LeftBottomLiftMotor.spin(vex::directionType::rev, LiftSpeed, vex::velocityUnits::pct);
       RightLiftMotor.spin(vex::directionType::rev, LiftSpeed, vex::velocityUnits::pct);
@@ -134,7 +156,7 @@ int main() {
     //Intake Program:
 
     //If Button 3 is pressed, the lift will move up
-    if (Controller.ButtonL2.pressing()) {
+    if (Yeetroller.ButtonL2.pressing()) {
         LeftIntakeMotor.spin(vex::directionType::fwd, intakeSpeed, vex::velocityUnits::pct);
         RightIntakeMotor.spin(vex::directionType::fwd, intakeSpeed, vex::velocityUnits::pct);
     }
@@ -155,6 +177,10 @@ int main() {
   }
   
 }
+
+
+
+
 
 
 
