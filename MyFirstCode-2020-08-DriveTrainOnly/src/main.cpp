@@ -36,9 +36,9 @@ vex::competition    Competition;
 
 //Drivetrain
 vex::motor  leftTopDriveMotor = vex::motor( vex:: PORT1);
-vex::motor  rightTopDriveMotor = vex::motor( vex:: PORT10);
-vex::motor  leftBottomDriveMotor = vex::motor( vex:: PORT10);
-vex::motor  rightBottomDriveMotor = vex::motor( vex:: PORT10);
+vex::motor  rightTopDriveMotor = vex::motor( vex:: PORT2);
+vex::motor  leftBottomDriveMotor = vex::motor( vex:: PORT3);
+vex::motor  rightBottomDriveMotor = vex::motor( vex:: PORT4);
 
 
 
