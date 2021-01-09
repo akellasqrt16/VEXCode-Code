@@ -81,7 +81,9 @@ int main() {
 
   int intakeSpeed = 100;
 
-  int driveSpeed = 100;
+  int driveSpeedLTRB = 100;
+
+  int driveSpeedRTLB = 100;
 
   int shellSpeed = 100;
   
@@ -89,39 +91,70 @@ int main() {
   // infinite loop for the controller binds
   while (1) {
 
-    
+    //accounts for the fact that speed should be dependent on how far the stick is pushed forwards/backwards
+
+    int stickFactor = (Yeetroller.Axis3.position())/100;
+
+
 //Drive Train Program
   //Left Stick  
     //When the left stick is in the 1st quadrant, the robot moves diagonally right.
-    if(Yeetroller.Axis3.position() > 0 && Yeetroller.Axis4.position() > 0) {
-      leftTopDriveMotor.spin(vex::directionType::fwd, driveSpeed, vex::velocityUnits::pct);
-      rightBottomDriveMotor.spin(vex::directionType::rev, driveSpeed, vex::velocityUnits::pct);
-    } 
-    //When the left stick is in the 2st quadrant, the robot moves diagonally left.
-    else if(Yeetroller.Axis3.position() > 0 && Yeetroller.Axis4.position() < 0) {
-      leftBottomDriveMotor.spin(vex::directionType::fwd, driveSpeed, vex::velocityUnits::pct);
-      rightTopDriveMotor.spin(vex::directionType::rev, driveSpeed, vex::velocityUnits::pct);
+    
+    if (Yeetroller.Axis3.position() > 30){ 
+      if (Yeetroller.Axis4.position() >= 0) {
+
+        //Drivespeed for left top and right bottom motors
+        driveSpeedLTRB = 100*stickFactor;
+
+
+        //Drivespeed for right top and left bottom motors
+        driveSpeedRTLB = (100-(2*Yeetroller.Axis4.position()))*stickFactor;
+
+      }
+      else if (Yeetroller.Axis4.position() < 0){
+
+        
+        driveSpeedLTRB = 100+(2*(Yeetroller.Axis4.position()))*stickFactor;
+
+        driveSpeedRTLB = 100*stickFactor;
+
+      }
     }
-    //When the left stick is in the 3rd quadrant, the robot moves backwards diagonally left.
-    else if(Yeetroller.Axis3.position() < 0 && Yeetroller.Axis4.position() < 0) {
-      leftTopDriveMotor.spin(vex::directionType::rev, driveSpeed, vex::velocityUnits::pct);
-      rightBottomDriveMotor.spin(vex::directionType::fwd, driveSpeed, vex::velocityUnits::pct);
+    if (Yeetroller.Axis3.position()< 30 && Yeetroller.Axis3.position() >-30){
+      leftBottomDriveMotor.stop(vex::brakeType::brake);
+      leftTopDriveMotor.stop(vex::brakeType::brake);
+      rightTopDriveMotor.stop(vex::brakeType::brake);
+      rightBottomDriveMotor.stop(vex::brakeType::brake);
     }
-    //When the left stick is in the 4th quadrant, the robot moves backwards diagonally right.
-    else if(Yeetroller.Axis3.position() < 0 && Yeetroller.Axis4.position() > 0) {
-      leftBottomDriveMotor.spin(vex::directionType::rev, driveSpeed, vex::velocityUnits::pct);
-      rightTopDriveMotor.spin(vex::directionType::fwd, driveSpeed, vex::velocityUnits::pct);
-    }
+      leftTopDriveMotor.spin(vex::directionType::fwd, driveSpeedLTRB, vex::velocityUnits::pct);
+      rightBottomDriveMotor.spin(vex::directionType::rev, driveSpeedLTRB, vex::velocityUnits::pct);
+      leftBottomDriveMotor.spin(vex::directionType::rev, driveSpeedRTLB, vex::velocityUnits::pct);
+      rightTopDriveMotor.spin(vex::directionType::fwd, driveSpeedRTLB, vex::velocityUnits::pct);
+
+  
+    
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   //Right Stick
     //If the right stick is to the right, the robot will turn right.
-    else if(Yeetroller.Axis1.position() > 0) {
-      leftTopDriveMotor.spin(vex::directionType::fwd, driveSpeed, vex::velocityUnits::pct);
-      rightBottomDriveMotor.spin(vex::directionType::rev, driveSpeed, vex::velocityUnits::pct);
+    if(Yeetroller.Axis1.position() > 30) {
+      leftTopDriveMotor.spin(vex::directionType::fwd, driveSpeedLTRB, vex::velocityUnits::pct);
+      rightBottomDriveMotor.spin(vex::directionType::rev, driveSpeedLTRB, vex::velocityUnits::pct);
     } 
     //If the right stick is to the left, the robot will turn left.
-    else if(Yeetroller.Axis1.position() < 0) {
-      leftBottomDriveMotor.spin(vex::directionType::rev, driveSpeed, vex::velocityUnits::pct);
-      rightTopDriveMotor.spin(vex::directionType::fwd, driveSpeed, vex::velocityUnits::pct);
+    else if(Yeetroller.Axis1.position() < -30) {
+      leftBottomDriveMotor.spin(vex::directionType::rev, driveSpeedRTLB, vex::velocityUnits::pct);
+      rightTopDriveMotor.spin(vex::directionType::fwd, driveSpeedRTLB, vex::velocityUnits::pct);
     } 
     //if nothing else is pressed, the drivetrain will stay stationary
     else {
