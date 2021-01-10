@@ -85,7 +85,6 @@ int main() {
 
   int driveSpeedRTLB = 100;
 
-  int shellSpeed = 100;
   
   
   // infinite loop for the controller binds
@@ -157,7 +156,7 @@ int main() {
       rightTopDriveMotor.spin(vex::directionType::fwd, driveSpeedRTLB, vex::velocityUnits::pct);
     } 
     //if nothing else is pressed, the drivetrain will stay stationary
-    else {
+    else if (Yeetroller.Axis2.position() > 30) {
       leftBottomDriveMotor.stop(vex::brakeType::brake);
       leftTopDriveMotor.stop(vex::brakeType::brake);
       rightTopDriveMotor.stop(vex::brakeType::brake);
