@@ -125,8 +125,8 @@ int main() {
       rightTopDriveMotor.stop(vex::brakeType::brake);
       rightBottomDriveMotor.stop(vex::brakeType::brake);
     }
-      leftTopDriveMotor.spin(vex::directionType::fwd, driveSpeedLTRB, vex::velocityUnits::pct);
-      rightBottomDriveMotor.spin(vex::directionType::rev, driveSpeedLTRB, vex::velocityUnits::pct);
+      leftTopDriveMotor.spin(vex::directionType::rev, driveSpeedLTRB, vex::velocityUnits::pct);
+      rightBottomDriveMotor.spin(vex::directionType::fwd, driveSpeedLTRB, vex::velocityUnits::pct);
       leftBottomDriveMotor.spin(vex::directionType::rev, driveSpeedRTLB, vex::velocityUnits::pct);
       rightTopDriveMotor.spin(vex::directionType::fwd, driveSpeedRTLB, vex::velocityUnits::pct);
 
