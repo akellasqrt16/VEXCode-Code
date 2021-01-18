@@ -81,9 +81,9 @@ int main() {
 
   int intakeSpeed = 100;
 
-  int driveSpeedLTRB = 100;
+  int driveSpeedLTRB = 0;
 
-  int driveSpeedRTLB = 100;
+  int driveSpeedRTLB = 0;
 
   
   
@@ -100,7 +100,7 @@ int main() {
     //When the left stick is in the 1st quadrant, the robot moves diagonally right.
     
     if (Yeetroller.Axis3.position() > 30){ 
-      if (Yeetroller.Axis4.position() >= 0) {
+      if (Yeetroller.Axis4.position() > 0) {
 
         //Drivespeed for left top and right bottom motors
         driveSpeedLTRB = 100*stickFactor;
