@@ -99,7 +99,7 @@ int main() {
   //Left Stick  
     //When the left stick is in the 1st quadrant, the robot moves diagonally right.
     
-    while (Yeetroller.Axis3.position() > 30){ 
+    if (Yeetroller.Axis3.position() > 30){ 
       if (Yeetroller.Axis4.position() > 0) {
 
         //Drivespeed for left top and right bottom motors
@@ -124,7 +124,7 @@ int main() {
       rightTopDriveMotor.spin(vex::directionType::fwd, driveSpeedRTLB, vex::velocityUnits::pct);
 
     }
-    while (Yeetroller.Axis3.position()< 30 && Yeetroller.Axis3.position() >-30){
+    if (Yeetroller.Axis3.position()< 30 && Yeetroller.Axis3.position() >-30){
       leftBottomDriveMotor.stop(vex::brakeType::brake);
       leftTopDriveMotor.stop(vex::brakeType::brake);
       rightTopDriveMotor.stop(vex::brakeType::brake);
