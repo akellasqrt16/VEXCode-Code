@@ -70,6 +70,17 @@ void auton (void) {
 
 }
 
+int runoff(int parameter) {
+  if (parameter > 100){
+    parameter = 100;
+  }
+  else if (parameter < -100){
+    parameter = -100;
+  }
+  return parameter;
+}
+
+
 //User control period (and general)
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
@@ -99,42 +110,58 @@ int main() {
 //Drive Train Program
   //Left Stick  
     //When the left stick is in the 1st quadrant, the robot moves diagonally right.
-    
-    if (Yeetroller.Axis3.position() > 30){ 
-      if (Yeetroller.Axis4.position() > 0) {
-
-        //Drivespeed for left top and right bottom motors
-        driveSpeedLTRB = 100*stickFactor;
+    int forward = Yeetroller.Axis3.position();
+    int sideways = Yeetroller.Axis4.position();  
 
 
-        //Drivespeed for right top and left bottom motors
-        driveSpeedRTLB = (100-(2*Yeetroller.Axis4.position()))*stickFactor;
 
-      }
-      else if (Yeetroller.Axis4.position() < 0){
+
+    int RT = forward - sideways;
+    RT = runoff(RT);
+    int RB = forward + sideways;
+    RB = runoff(RB);
+    int LB = forward - sideways;
+    LB = runoff(LB);
+    int LT = forward + sideways;
+    LT = runoff(LT);
+
+  
+
+
+
+
+
+
+    // if (Yeetroller.Axis3.position() > 30){ 
+    //   if (Yeetroller.Axis4.position() > 0) {
+
+    //     //Drivespeed for left top and right bottom motors
+    //     driveSpeedLTRB = 100*stickFactor;
+
+
+    //     //Drivespeed for right top and left bottom motors
+    //     driveSpeedRTLB = (100-(2*Yeetroller.Axis4.position()))*stickFactor;
+
+    //   }
+    //   else if (Yeetroller.Axis4.position() < 0){
 
         
-        driveSpeedLTRB = 100+(2*(Yeetroller.Axis4.position()))*stickFactor;
+    //     driveSpeedLTRB = 100+(2*(Yeetroller.Axis4.position()))*stickFactor;
 
-        driveSpeedRTLB = 100*stickFactor;
+    //     driveSpeedRTLB = 100*stickFactor;
 
-      }
-      leftTopDriveMotor.spin(vex::directionType::rev, driveSpeedLTRB, vex::velocityUnits::pct);
-      rightBottomDriveMotor.spin(vex::directionType::fwd, driveSpeedLTRB, vex::velocityUnits::pct);
-      leftBottomDriveMotor.spin(vex::directionType::rev, driveSpeedRTLB, vex::velocityUnits::pct);
-      rightTopDriveMotor.spin(vex::directionType::fwd, driveSpeedRTLB, vex::velocityUnits::pct);
-
-    }
-    if (Yeetroller.Axis3.position()< 30 && Yeetroller.Axis3.position() >-30){
-      leftBottomDriveMotor.stop(vex::brakeType::brake);
-      leftTopDriveMotor.stop(vex::brakeType::brake);
-      rightTopDriveMotor.stop(vex::brakeType::brake);
-      rightBottomDriveMotor.stop(vex::brakeType::brake);
-    }
-    // leftTopDriveMotor.spin(vex::directionType::rev, driveSpeedLTRB, vex::velocityUnits::pct);
-    // rightBottomDriveMotor.spin(vex::directionType::fwd, driveSpeedLTRB, vex::velocityUnits::pct);
-    // leftBottomDriveMotor.spin(vex::directionType::rev, driveSpeedRTLB, vex::velocityUnits::pct);
-    // rightTopDriveMotor.spin(vex::directionType::fwd, driveSpeedRTLB, vex::velocityUnits::pct);
+    //   }
+    // }
+    // if (Yeetroller.Axis3.position()< 30 && Yeetroller.Axis3.position() >-30){
+    //   leftBottomDriveMotor.stop(vex::brakeType::brake);
+    //   leftTopDriveMotor.stop(vex::brakeType::brake);
+    //   rightTopDriveMotor.stop(vex::brakeType::brake);
+    //   rightBottomDriveMotor.stop(vex::brakeType::brake);
+    // }
+      leftTopDriveMotor.spin(vex::directionType::fwd, LT, vex::velocityUnits::pct);
+      rightBottomDriveMotor.spin(vex::directionType::rev, RB, vex::velocityUnits::pct);
+      leftBottomDriveMotor.spin(vex::directionType::rev, LB, vex::velocityUnits::pct);
+      rightTopDriveMotor.spin(vex::directionType::fwd, RT, vex::velocityUnits::pct);
 
   
     
