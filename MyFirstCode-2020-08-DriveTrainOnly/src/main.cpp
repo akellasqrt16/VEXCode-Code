@@ -80,6 +80,11 @@ int runoff(int parameter) {
   return parameter;
 }
 
+int average(int input1, int input2){
+  return (input1+input2)/2;
+}
+
+
 
 //User control period (and general)
 int main() {
@@ -109,18 +114,19 @@ int main() {
   //Left Stick  
     //When the left stick is in the 1st quadrant, the robot moves diagonally right.
     int forward = Yeetroller.Axis4.position();
-    int sideways = Yeetroller.Axis3.position();  
+    int leftSideways = Yeetroller.Axis3.position();
+    int rightSideways = Yeetroller.Axis1.position();  
 
 
 
 
-    int RT = forward - sideways;
+    int RT = forward - average(leftSideways,rightSideways);
     RT = runoff(RT);
-    int RB = forward + sideways;
+    int RB = forward + average(leftSideways,rightSideways);
     RB = runoff(RB);
-    int LB = forward - sideways;
+    int LB = forward - average(leftSideways,rightSideways);
     LB = runoff(LB);
-    int LT = forward + sideways;
+    int LT = forward + average(leftSideways,rightSideways);
     LT = runoff(LT);
 
   
