@@ -104,14 +104,12 @@ int main() {
 
     //accounts for the fact that speed should be dependent on how far the stick is pushed forwards/backwards
 
-    int stickFactor = (Yeetroller.Axis3.position())/100;
-
 
 //Drive Train Program
   //Left Stick  
     //When the left stick is in the 1st quadrant, the robot moves diagonally right.
-    int forward = Yeetroller.Axis3.position();
-    int sideways = Yeetroller.Axis4.position();  
+    int forward = Yeetroller.Axis4.position();
+    int sideways = Yeetroller.Axis3.position();  
 
 
 
