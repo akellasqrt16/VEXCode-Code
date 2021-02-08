@@ -113,9 +113,9 @@ int main() {
 //Drive Train Program
   //Left Stick  
     //When the left stick is in the 1st quadrant, the robot moves diagonally right.
-    int forward = Yeetroller.Axis4.position();
-    int leftSideways = Yeetroller.Axis3.position();
-    int rightSideways = Yeetroller.Axis1.position();  
+    int forward = Yeetroller.Axis3.position();
+    int leftSideways = Yeetroller.Axis4.position();
+    int rightSideways = Yeetroller.Axis2.position();  
 
 
 
