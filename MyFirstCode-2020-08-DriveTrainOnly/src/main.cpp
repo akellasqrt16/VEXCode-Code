@@ -22,8 +22,6 @@
 
 
 
-
-
 #include "vex.h"
 
 using namespace vex;
@@ -36,10 +34,10 @@ vex::competition    Competition;
 //Make sure to CHANGE THE PORT NUMBER TO THE PORT THAT THE CORRESPONDING MOTOR IS PLUGGED INTO
 
 //Drivetrain
-vex::motor  leftTopDriveMotor = vex::motor( vex:: PORT1);
-vex::motor  rightTopDriveMotor = vex::motor( vex:: PORT2);
-vex::motor  leftBottomDriveMotor = vex::motor( vex:: PORT3);
-vex::motor  rightBottomDriveMotor = vex::motor( vex:: PORT4);
+vex::motor  leftTopDriveMotor = vex::motor( vex:: PORT3);
+vex::motor  rightTopDriveMotor = vex::motor( vex:: PORT18,true);
+vex::motor  leftBottomDriveMotor = vex::motor( vex:: PORT19,true);
+vex::motor  rightBottomDriveMotor = vex::motor( vex:: PORT20);
 
 
 
@@ -64,11 +62,7 @@ void setup (void) {
 
 }
 
-//The code for the autonomous period (when we get around to doing that)
-void auton (void) {
 
-
-}
 
 int runoff(int parameter) {
   if (parameter > 100){
@@ -79,6 +73,22 @@ int runoff(int parameter) {
   }
   return parameter;
 }
+
+
+
+
+
+int overFlow(int input){
+  if (input < 30 && input > 0){
+    input = 0;
+  } else if (input > -30 && input < 0){
+    input = 0;
+  }
+  return input;
+}
+
+
+
 
 int average(int input1, int input2){
   return (input1+input2)/2;
@@ -98,74 +108,45 @@ int main() {
 
   int intakeSpeed = 100;
 
-  int driveSpeedLTRB = 0;
-
-  int driveSpeedRTLB = 0;
-
   
   
   // infinite loop for the controller binds
   while (1) {
 
-    //accounts for the fact that speed should be dependent on how far the stick is pushed forwards/backwards
 
 
 //Drive Train Program
   //Left Stick  
-    //When the left stick is in the 1st quadrant, the robot moves diagonally right.
-    int forward = Yeetroller.Axis3.position();
+    int leftForward = Yeetroller.Axis3.position();
     int leftSideways = Yeetroller.Axis4.position();
-    int rightSideways = Yeetroller.Axis2.position();  
+    int rightSideways = Yeetroller.Axis1.position();  
 
 
 
-
-    int RT = forward - average(leftSideways,rightSideways);
-    RT = runoff(RT);
-    int RB = forward + average(leftSideways,rightSideways);
-    RB = runoff(RB);
-    int LB = forward - average(leftSideways,rightSideways);
-    LB = runoff(LB);
-    int LT = forward + average(leftSideways,rightSideways);
+    int LT = leftForward + leftSideways + rightSideways;
     LT = runoff(LT);
-
-  
-
-
-
-
-
-
-    // if (Yeetroller.Axis3.position() > 30){ 
-    //   if (Yeetroller.Axis4.position() > 0) {
-
-    //     //Drivespeed for left top and right bottom motors
-    //     driveSpeedLTRB = 100*stickFactor;
+    LT = overFlow(LT);
+    int RT = leftForward - leftSideways - rightSideways;
+    RT = runoff(RT);
+    RT = overFlow(RT);
+    int LB = leftForward - leftSideways + rightSideways;
+    LB = runoff(LB);
+    LB = overFlow(LB);
+    int RB = leftForward + leftSideways - rightSideways;
+    RB = runoff(RB);
+    RB = overFlow(RB);
+    
 
 
-    //     //Drivespeed for right top and left bottom motors
-    //     driveSpeedRTLB = (100-(2*Yeetroller.Axis4.position()))*stickFactor;
 
-    //   }
-    //   else if (Yeetroller.Axis4.position() < 0){
 
-        
-    //     driveSpeedLTRB = 100+(2*(Yeetroller.Axis4.position()))*stickFactor;
 
-    //     driveSpeedRTLB = 100*stickFactor;
 
-    //   }
-    // }
-    // if (Yeetroller.Axis3.position()< 30 && Yeetroller.Axis3.position() >-30){
-    //   leftBottomDriveMotor.stop(vex::brakeType::brake);
-    //   leftTopDriveMotor.stop(vex::brakeType::brake);
-    //   rightTopDriveMotor.stop(vex::brakeType::brake);
-    //   rightBottomDriveMotor.stop(vex::brakeType::brake);
-    // }
-      leftTopDriveMotor.spin(vex::directionType::fwd, LT, vex::velocityUnits::pct);
-      rightBottomDriveMotor.spin(vex::directionType::rev, RB, vex::velocityUnits::pct);
-      leftBottomDriveMotor.spin(vex::directionType::rev, LB, vex::velocityUnits::pct);
-      rightTopDriveMotor.spin(vex::directionType::fwd, RT, vex::velocityUnits::pct);
+    
+    leftTopDriveMotor.spin(vex::directionType::fwd, LT, vex::velocityUnits::pct);
+    rightBottomDriveMotor.spin(vex::directionType::rev, RB, vex::velocityUnits::pct);
+    leftBottomDriveMotor.spin(vex::directionType::rev, LB, vex::velocityUnits::pct);
+    rightTopDriveMotor.spin(vex::directionType::fwd, RT, vex::velocityUnits::pct);
 
   
     
@@ -181,24 +162,7 @@ int main() {
   
   
   
-  //Right Stick
-    //If the right stick is to the right, the robot will turn right.
-    if(Yeetroller.Axis1.position() > 30) {
-      leftTopDriveMotor.spin(vex::directionType::fwd, driveSpeedLTRB, vex::velocityUnits::pct);
-      rightBottomDriveMotor.spin(vex::directionType::rev, driveSpeedLTRB, vex::velocityUnits::pct);
-    } 
-    //If the right stick is to the left, the robot will turn left.
-    else if(Yeetroller.Axis1.position() < -30) {
-      leftBottomDriveMotor.spin(vex::directionType::rev, driveSpeedRTLB, vex::velocityUnits::pct);
-      rightTopDriveMotor.spin(vex::directionType::fwd, driveSpeedRTLB, vex::velocityUnits::pct);
-    } 
-    //if nothing else is pressed, the drivetrain will stay stationary
-    else if (Yeetroller.Axis2.position() > 30) {
-      leftBottomDriveMotor.stop(vex::brakeType::brake);
-      leftTopDriveMotor.stop(vex::brakeType::brake);
-      rightTopDriveMotor.stop(vex::brakeType::brake);
-      rightBottomDriveMotor.stop(vex::brakeType::brake);
-    }
+  
 
 
     //Intakes Program
@@ -234,6 +198,21 @@ int main() {
     //If nothing is pressed, the vcb will stay stationary
     else {
       vcb.stop(vex::brakeType::brake);
+    }
+
+    //shell Program:
+
+    //If Button 3 is pressed, the vcb will move forward
+    if (Yeetroller.ButtonA.pressing()) {
+        shell.spin(vex::directionType::rev, vcbSpeed, vex::velocityUnits::pct);
+    }
+    //If Button 3 is pressed, the vcb will move in the opposite direction
+    else if (Yeetroller.ButtonX.pressing()) {
+        shell.spin(vex::directionType::fwd, vcbSpeed, vex::velocityUnits::pct);
+    }
+    //If nothing is pressed, the vcb will stay stationary
+    else {
+      shell.stop(vex::brakeType::brake);
     }
 
 
