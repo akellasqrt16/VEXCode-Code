@@ -27,7 +27,7 @@ vex::motor  rightBottomDriveMotor = vex::motor( vex:: PORT20);
 vex::motor  vcb = vex::motor( vex:: PORT5, true);
 
 //Shell
-vex::motor shell = vex::motor( vex:: PORT6, true);
+vex::motor shell = vex::motor( vex:: PORT6);
 
 //Intakes
 vex::motor  LeftIntake = vex::motor( vex:: PORT9); //Change port
@@ -65,10 +65,33 @@ void turnLeft(){
 
 }
 
+void ballIn(){
+  RightIntake.startRotateFor(vex::directionType::rev, 1080, vex::rotationUnits::deg);
+  LeftIntake.rotateFor(vex::directionType::fwd, 1080, vex::rotationUnits::deg);
+  vcb.rotateFor(vex::directionType::fwd, 7*360, vex::rotationUnits::deg);
+  shell.rotateFor(vex::directionType::fwd, 7*360, vex::rotationUnits::deg);
+
+
+}
+
+void intake(){
+  RightIntake.startRotateFor(vex::directionType::rev, 1080, vex::rotationUnits::deg);
+  LeftIntake.rotateFor(vex::directionType::fwd, 1080, vex::rotationUnits::deg);
+}
+
 
 
 void auton() {
   // Initializing Robot Configuration. DO NOT REMOVE!
+  moveForward(1);
+  ballIn();
+  turnRight();
+  turnRight();
+  moveForward(4);
+  intake();
+  turnLeft();
+  ballIn();
+  
 
   
 
