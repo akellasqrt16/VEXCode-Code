@@ -42,7 +42,7 @@ vex::motor  rightBottomDriveMotor = vex::motor( vex:: PORT20);
 
 
 //VCB
-vex::motor  vcb = vex::motor( vex:: PORT5, true);
+vex::motor  vcb = vex::motor( vex:: PORT5,true);
 
 //Shell
 vex::motor shell = vex::motor( vex:: PORT6, true);
@@ -169,36 +169,30 @@ int main() {
 
 
     //If Button 1 is pressed, the Intakes will move inwards
-    if (Yeetroller.ButtonR1.pressing()) {
+    if (Yeetroller.ButtonR1.pressing() || Yeetroller.ButtonL1.pressing()) {
         LeftIntake.spin(vex::directionType::fwd, intakeSpeed, vex::velocityUnits::pct);
         RightIntake.spin(vex::directionType::fwd, intakeSpeed, vex::velocityUnits::pct);
+        vcb.spin(vex::directionType::rev, intakeSpeed, vex::velocityUnits::pct);
+        shell.spin(vex::directionType::rev, intakeSpeed, vex::velocityUnits::pct);
     }
     //If Button 2 is pressed, the intakes will move outwards
-    else if (Yeetroller.ButtonR2.pressing()){
+    else if (Yeetroller.ButtonR2.pressing() || Yeetroller.ButtonL2.pressing()){
       LeftIntake.spin(vex::directionType::rev, intakeSpeed, vex::velocityUnits::pct);
       RightIntake.spin(vex::directionType::rev, intakeSpeed, vex::velocityUnits::pct);
+      vcb.spin(vex::directionType::fwd, intakeSpeed, vex::velocityUnits::pct);
+      shell.spin(vex::directionType::fwd, intakeSpeed, vex::velocityUnits::pct);
     }
     //If nothing is pressed, the intakes will stay stationary
     else {
       LeftIntake.stop(vex::brakeType::brake);
       RightIntake.stop(vex::brakeType::brake);
+      vcb.stop(vex::brakeType::brake);
+      shell.stop(vex::brakeType::brake);
     }
 
 
     //VCB Program:
 
-    //If Button 3 is pressed, the vcb will move forward
-    if (Yeetroller.ButtonL1.pressing()) {
-        vcb.spin(vex::directionType::rev, vcbSpeed, vex::velocityUnits::pct);
-    }
-    //If Button 3 is pressed, the vcb will move in the opposite direction
-    else if (Yeetroller.ButtonL2.pressing()) {
-        vcb.spin(vex::directionType::fwd, vcbSpeed, vex::velocityUnits::pct);
-    }
-    //If nothing is pressed, the vcb will stay stationary
-    else {
-      vcb.stop(vex::brakeType::brake);
-    }
 
     //shell Program:
 
