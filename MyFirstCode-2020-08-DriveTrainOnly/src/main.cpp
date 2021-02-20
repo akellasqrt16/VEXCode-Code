@@ -27,7 +27,7 @@ vex::motor  rightBottomDriveMotor = vex::motor( vex:: PORT20);
 vex::motor  vcb = vex::motor( vex:: PORT5, true);
 
 //Shell
-vex::motor shell = vex::motor( vex:: PORT6);
+vex::motor shell = vex::motor( vex:: PORT6,true);
 
 //Intakes
 vex::motor  LeftIntake = vex::motor( vex:: PORT9); //Change port
